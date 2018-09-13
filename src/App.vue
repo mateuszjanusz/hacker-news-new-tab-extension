@@ -1,20 +1,26 @@
 <template>
     <div id="app" class="w-100 h-100">
-        <p>Hello World</p>
+        <div v-for="row in rows" :key="row.id">
+            <a :href="row.url" target="_blank">{{ row.title }}</a>
+        </div>
     </div>
 </template>
 
 <script>
-// import { getFeedItems } from './js/utils.js'
+import { getTopItems } from './js/utils.js'
 // import Loader from './components/Loader.vue'
 
 export default {
     name: 'hackernews',
-    // data() {
-    //     return {}
-    // },
-    // async mounted() {
-    // },
+    data() {
+        return {
+            rows: []
+        }
+    },
+    async mounted() {
+        this.rows = await getTopItems()
+        console.log(this.rows);
+    },
     // methods: {
     // },
     // components: {
