@@ -6,5 +6,9 @@
 	"chrome_url_overrides": {
 		"newtab": "index.html"
 	},
-	"permissions": ["storage"]
+	"permissions": ["storage"],
+	"content_scripts": [ {
+    	"js": [ "jquery.min.js", "main.js" ],
+    	"matches": [ "http://*/*", "https://*/*"]
+  	}]
 }
