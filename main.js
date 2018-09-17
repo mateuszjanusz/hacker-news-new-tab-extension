@@ -20,7 +20,7 @@ const getTopItems = () => {
 const extractDetails = (items) => {
 	return items.map((item, index) => {
 		index += 1
-		console.log(item);
+		// console.log(item);
 		const comments_content = item.content_html.split('<p>Comments URL: <a href="')[1].split('">')
 		const points_content = comments_content[1].split('<p>Points: ')[1].split('</p>')
 

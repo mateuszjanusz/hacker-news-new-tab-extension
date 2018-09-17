@@ -1,19 +1,13 @@
 body {
-	/*background-color: #333533;*/
-	/*color: #E8EDDF;*/
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 	-webkit-box-pack: center;
 	-ms-flex-pack: center;
 	justify-content: center;
 	padding: 14px;
 	margin: auto;
     width: 70%;
-}
-
-#app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
 }
 
 ul {
@@ -48,13 +42,14 @@ a:visited {
 }
 
 .box {
-	width: 32px;
-	height: 32px;
+	width: 30px;
+	height: 30px;
 	background-color: #ff6600;
 	border: 1px solid #ff6600;
 	border-radius: 5px;
 	color: white;
 	font-weight: 500;
+	font-size: 15px;
 	padding: 4px;
 }
 
@@ -63,15 +58,16 @@ a:visited {
 }
 
 .title {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .item-footer {
-	padding-top: 6px;
+	padding-top: 2px;
 }
 
 .small-text {
-	font-size: 12px;
+	font-size: 14px;
+	color: #787878;
 }
 /*::-webkit-scrollbar {
     display: none;
