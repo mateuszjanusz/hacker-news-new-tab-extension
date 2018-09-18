@@ -1,8 +1,8 @@
 const hnrss_url_json = 'https://hnrss.org/frontpage.jsonfeed?count=50'
 const user_url_prefix = 'https://news.ycombinator.com/user?id='
 
-const getTopItems = () => {
-	$.ajax({
+const getItems = () => {
+	return $.ajax({
     	url: config.proxy + hnrss_url_json,
     	type: 'GET',
         error: error => {
@@ -10,13 +10,13 @@ const getTopItems = () => {
         },
     	success: (data, status) => {
       		if (status == "success") {
-      			const items = extractDetails(data.items)
+      			return data
       		}
     	}
   	})
 }
 
-const extractDetails = (items) => {
+const createList = (items) => {
 	return items.map((item, index) => {
 		index += 1
 		const comments_content = item.content_html.split('<p>Comments URL: <a href="')[1].split('">')
@@ -50,7 +50,28 @@ const extractDetails = (items) => {
 }
 
 
-$(document).ready(() => {
-	getTopItems()
-			
+$(document).ready(async () => {
+    const now = Date.now()
+	let items = []
+
+ 	await new Promise(resolve => {
+ 		chrome.storage.local.get(['front'], async res => {
+	 		if (res.front.expires > now) {
+	 			items = res.front.items
+	 			resolve()
+	 		} else {
+		    	const data = await getItems()
+				items = data.items
+				const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in N minutes from now
+
+				chrome.storage.local.set({ front: {
+					items,
+					expires
+				}})
+				resolve()
+	 		}
+	    })
+ 	})
+
+	createList(items)
 })
