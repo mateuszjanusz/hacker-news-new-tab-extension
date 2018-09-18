@@ -1,10 +1,9 @@
-const PROXY_URL = 'https://cors-anywhere.herokuapp.com/'
 const hnrss_url_json = 'https://hnrss.org/frontpage.jsonfeed?count=50'
 const user_url_prefix = 'https://news.ycombinator.com/user?id='
 
 const getTopItems = () => {
 	$.ajax({
-    	url: PROXY_URL + hnrss_url_json,
+    	url: config.proxy + hnrss_url_json,
     	type: 'GET',
         error: error => {
         	throw new Error(error.responseText)
@@ -20,7 +19,6 @@ const getTopItems = () => {
 const extractDetails = (items) => {
 	return items.map((item, index) => {
 		index += 1
-		// console.log(item);
 		const comments_content = item.content_html.split('<p>Comments URL: <a href="')[1].split('">')
 		const points_content = comments_content[1].split('<p>Points: ')[1].split('</p>')
 
