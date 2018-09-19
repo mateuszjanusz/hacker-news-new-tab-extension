@@ -138,8 +138,13 @@ $(document).ready(async () => {
 	}
 
 	$('.loader').hide()
+	$('ul li:gt(24)').hide()
 	$('ul').show()
 
+	$('#show_button').click(function() {
+		$('#show_button').hide()
+		$('ul li:gt(24)').show()
+	})
 	$('#moon').click(() => setDarkMode())
 	$('#sun').click(() => setLightMode())
 })
