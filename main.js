@@ -34,6 +34,9 @@ const createList = items => {
 		const points_count = +points_content[0]
 		const user_url = user_url_prefix + item.author
 
+		const points_string = points_count > 1 ? `${points_count} points | ` : `${points_count} point | `
+		const comments_string = comments_count !== 1 ? `${comments_count} comments | ` : `${comments_count} comment | `
+
 		$('ul').append(
 			$('<li>').append([
 				$('<div>')
@@ -54,13 +57,13 @@ const createList = items => {
 							.append([
 								$('<span>')
 									.attr('class', 'small-text')
-									.append(`${points_count} points | `),
+									.append(points_string),
 								$('<a target="_blank">')
 									.attr('href', comments_url)
 									.append(
 										$('<span>')
 											.attr('class', 'small-text')
-											.append(`${comments_count} comments | `)
+											.append(comments_string)
 									),
 								$('<span>')
 									.attr('class', 'small-text')
@@ -107,7 +110,7 @@ $(document).ready(async () => {
 		chrome.storage.local.get(['front', 'dark_mode'], async res => {
 			dark_mode = res.dark_mode
 
-			if (res.front.expires > now) {
+			if (res.front && res.front.expires > now) {
 				items = res.front.items
 				resolve()
 			} else {
