@@ -1,4 +1,6 @@
 config.js
+.prettierrc.js
+.prettierignore
 
 # Logs
 logs

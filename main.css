@@ -25,7 +25,7 @@ li {
 }
 
 a {
-	color: #333;
+	color: #333333;
 	font-weight: 500;
 	text-decoration: none;
 	opacity: 1;
@@ -41,7 +41,8 @@ a:visited {
 	opacity: .5;
 }
 
-.box {
+
+.square {
 	width: 30px;
 	height: 30px;
 	background-color: #ff6600;
@@ -54,7 +55,8 @@ a:visited {
 }
 
 .section {
-	padding: 8px
+	padding: 8px;
+    padding-left: 14px;
 }
 
 .title {
@@ -68,6 +70,17 @@ a:visited {
 .small-text {
 	font-size: 14px;
 	color: #787878;
+}
+
+#moon,
+#sun {
+    display: none;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    position: absolute;
+    top: 14px;
+    right: 14px;
 }
 
 /* LOADER */
