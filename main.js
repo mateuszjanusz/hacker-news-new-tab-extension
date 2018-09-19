@@ -51,6 +51,9 @@ const createList = (items) => {
 
 
 $(document).ready(async () => {
+	$('ul').hide()
+	$('.loader').show()
+
     const now = Date.now()
 	let items = []
 
@@ -62,7 +65,7 @@ $(document).ready(async () => {
 	 		} else {
 		    	const data = await getItems()
 				items = data.items
-				const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in N minutes from now
+				const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in 5 minutes
 
 				chrome.storage.local.set({ front: {
 					items,
@@ -74,4 +77,7 @@ $(document).ready(async () => {
  	})
 
 	createList(items)
+
+	$('.loader').hide()
+	$('ul').show()
 })
