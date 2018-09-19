@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "HackerNews",
-	"version": "1.0.0",
-	"description": "Hacker News in New Tab for quick access to the latest stories",
+	"version": "0.0.1",
+	"description": "Hacker News in New Tab for quick access to the latest stories.",
 	"chrome_url_overrides": {
 		"newtab": "index.html"
 	},

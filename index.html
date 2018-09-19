@@ -4,13 +4,22 @@
 <head>
     <meta charset="utf-8">
     <title>New tab</title>
-    <link rel="stylesheet" href="./src/tachyons.css" />
-    <link rel="stylesheet" href="./src/main.css" />
+    <link rel="stylesheet" href="./main.css" />
 </head>
 
 <body>
-    <div id="hackernews"></div>
-    <script src="dist/build.js"></script>
+    <div id="hackernews">
+        <div id="header">
+            <img id="moon" src="./img/moon.svg" />
+    	    <img id="sun" src="./img/sun.svg" />
+        </div>
+    	<div class="loader"></div>
+    	<ul></ul>
+    </div>
+
+    <script src="./jquery.min.js"></script>
+    <script src="./config.js"></script>
+    <script src="./main.js"></script>
 </body>
 
 </html>
