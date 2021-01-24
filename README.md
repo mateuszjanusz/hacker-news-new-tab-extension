@@ -6,7 +6,7 @@ This is a small and light extension that will replace your New Tab page with top
 
 ## Install
 <a href="https://chrome.google.com/webstore/detail/hacker-news-in-new-tab/ecjkcfkjdeacecjplgihpljcjbecfiol"><img src="https://github.com/mateuszjanusz/hacker-news-new-tab-extension/blob/master/repo/chrome.png" height="24px"/> Chrome</a>
-<a href="https://chrome.google.com/webstore/detail/hacker-news-in-new-tab/ecjkcfkjdeacecjplgihpljcjbecfiol"><img src="https://github.com/mateuszjanusz/hacker-news-new-tab-extension/blob/master/repo/mozilla.png" height="24px"/> Firefox</a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/hacker-news-in-new-tab"><img src="https://github.com/mateuszjanusz/hacker-news-new-tab-extension/blob/master/repo/mozilla.png" height="24px"/> Firefox</a>
 
 ## Screenshots
 ![](https://github.com/mateuszjanusz/hacker-news-new-tab-extension/blob/master/repo/demo.png)
