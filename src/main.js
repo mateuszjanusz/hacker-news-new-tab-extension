@@ -1,5 +1,5 @@
-const hnrss_url_json = 'https://hnrss.org/frontpage.jsonfeed?count=50'
 const user_url_prefix = 'https://news.ycombinator.com/user?id='
+const post_url_prefix = 'https://news.ycombinator.com/item?id='
 
 const background_color = 'white'
 const small_text_color = '#787878'
@@ -8,9 +8,24 @@ const dark_text_color = '#E8EDDF'
 const dark_small_text_color = '#aeaeae'
 const dark_border_color = '#787878'
 
+const getItem = (id) => {
+    return $.ajax({
+        url: `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+        type: 'GET',
+        error: error => {
+            throw new Error(error.responseText)
+        },
+        success: (data, status) => {
+            if (status == 'success') {
+                return data
+            }
+        },
+    })
+}
+
 const getItems = () => {
     return $.ajax({
-        url: config.proxy + hnrss_url_json,
+        url: 'https://hacker-news.firebaseio.com/v0/topstories.json',
         type: 'GET',
         error: error => {
             throw new Error(error.responseText)
@@ -26,16 +41,9 @@ const getItems = () => {
 const createList = items => {
     return items.map((item, index) => {
         index += 1
-        const comments_content = item.content_html.split('<p>Comments URL: <a href="')[1].split('">')
-        const points_content = comments_content[1].split('<p>Points: ')[1].split('</p>')
 
-        const comments_url = comments_content[0]
-        const comments_count = +points_content[1].replace('<p># Comments: ', '')
-        const points_count = +points_content[0]
-        const user_url = user_url_prefix + item.author
-
-        const points_string = points_count > 1 ? `${points_count} points | ` : `${points_count} point | `
-        const comments_string = comments_count !== 1 ? `${comments_count} comments | ` : `${comments_count} comment | `
+        const user_url = user_url_prefix + item.by
+        const comments_url = post_url_prefix + item.id
 
         $('ul').append(
             $('<li>').append([
@@ -57,21 +65,21 @@ const createList = items => {
                             .append([
                                 $('<span>')
                                     .attr('class', 'small-text')
-                                    .append(points_string),
+                                    .append(` ${item.score} points | `),
                                 $('<a target="_blank">')
                                     .attr('href', comments_url)
                                     .append(
                                         $('<span>')
                                             .attr('class', 'small-text')
-                                            .append(comments_string)
+                                            .append(`${item.descendants} comments`)
                                     ),
                                 $('<span>')
                                     .attr('class', 'small-text')
-                                    .append(`by `),
+                                    .append(` | by `),
                                 $('<a target="_blank">')
                                     .attr('href', user_url)
                                     .attr('class', 'small-text')
-                                    .append(`${item.author}`),
+                                    .append(`${item.by}`),
                             ]),
                     ]),
             ])
@@ -116,7 +124,12 @@ $(document).ready(async () => {
                 resolve()
             } else {
                 const data = await getItems()
-                items = data.items
+
+                await Promise.all(data.slice(0, 50).map(async (id) => {
+                    const item = await getItem(id)
+                    items.push(item)
+                }));
+
                 const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in 5 minutes
 
                 chrome.storage.local.set({
