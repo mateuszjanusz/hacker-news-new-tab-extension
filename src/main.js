@@ -88,7 +88,9 @@ const createList = items => {
 }
 
 const setDarkMode = () => {
-    chrome.storage.local.set({ dark_mode: true })
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({ dark_mode: true })
+    }
     $('body').css('background-color', dark_background_color)
     $('a').css('color', dark_text_color)
     $('li').css('border-color', dark_border_color)
@@ -97,7 +99,9 @@ const setDarkMode = () => {
     $('#sun').show()
 }
 const setLightMode = () => {
-    chrome.storage.local.set({ dark_mode: false })
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({ dark_mode: false })
+    }
     $('body').css('background-color', background_color)
     $('a').css('color', dark_background_color)
     $('li').css('border-color', dark_text_color)
@@ -115,33 +119,52 @@ $(document).ready(async () => {
     let items = []
     let dark_mode = false
 
-    await new Promise(resolve => {
-        chrome.storage.local.get(['front', 'dark_mode'], async res => {
-            dark_mode = res.dark_mode
+    // Check if chrome.storage is available (extension context)
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+        await new Promise(resolve => {
+            chrome.storage.local.get(['front', 'dark_mode'], async res => {
+                dark_mode = res.dark_mode
 
-            if (res.front && res.front.expires > now) {
-                items = res.front.items
-                resolve()
-            } else {
-                const data = await getItems()
+                if (res.front && res.front.expires > now) {
+                    items = res.front.items
+                    resolve()
+                } else {
+                    try {
+                        const data = await getItems()
 
-                await Promise.all(data.slice(0, 50).map(async (id) => {
-                    const item = await getItem(id)
-                    items.push(item)
-                }));
+                        await Promise.all(data.slice(0, 50).map(async (id) => {
+                            const item = await getItem(id)
+                            items.push(item)
+                        }));
 
-                const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in 5 minutes
+                        const expires = new Date(now + 1000 * 60 * 5).getTime() // expires in 5 minutes
 
-                chrome.storage.local.set({
-                    front: {
-                        items,
-                        expires,
-                    },
-                })
-                resolve()
-            }
+                        chrome.storage.local.set({
+                            front: {
+                                items,
+                                expires,
+                            },
+                        })
+                        resolve()
+                    } catch (error) {
+                        console.error('Error fetching Hacker News data:', error)
+                        resolve()
+                    }
+                }
+            })
         })
-    })
+    } else {
+        // Fallback for non-extension context (development/testing)
+        try {
+            const data = await getItems()
+            await Promise.all(data.slice(0, 50).map(async (id) => {
+                const item = await getItem(id)
+                items.push(item)
+            }));
+        } catch (error) {
+            console.error('Error fetching Hacker News data:', error)
+        }
+    }
 
     createList(items)
 
